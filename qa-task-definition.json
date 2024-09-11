@@ -1,0 +1,339 @@
+{
+  "ipcMode": null,
+  "executionRoleArn": "arn:aws:iam::389132740677:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "dnsSearchDomains": null,
+      "environmentFiles": null,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "secretOptions": null,
+        "options": {
+          "awslogs-group": "/ecs/rimcentral-global-api-qa",
+          "awslogs-region": "us-east-2",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "entryPoint": null,
+      "portMappings": [
+        {
+          "hostPort": 7500,
+          "protocol": "tcp",
+          "containerPort": 7500
+        }
+      ],
+      "command": null,
+      "linuxParameters": null,
+      "cpu": 0,
+      "environment": [
+        {
+          "name": "API_PORT",
+          "value": "7500"
+        },
+        {
+          "name": "AUTH_REDIRECT_URL",
+          "value": ""
+        },
+        {
+          "name": "DB_HOST",
+          "value": ""
+        },
+        {
+          "name": "DB_NAME",
+          "value": ""
+        },
+        {
+          "name": "DB_PORT",
+          "value": "3306"
+        },
+        {
+          "name": "DB_USERNAME",
+          "value": "admin"
+        },
+        {
+          "name": "NODE_ENV",
+          "value": "prod"
+        },
+        {
+          "name": "OAUTH_ISSUER",
+          "value": ""
+        },
+        {
+          "name": "test_API_BASEURL",
+          "value": ""
+        },
+        {
+          "name": "AWS_REGION",
+          "value": "us-east-2"
+        }
+      ],
+      "resourceRequirements": null,
+      "ulimits": null,
+      "dnsServers": null,
+      "mountPoints": [],
+      "workingDirectory": null,
+      "secrets": [
+        {
+          "name": "DB_PASSWORD",
+          "valueFrom": "arn:aws:ssm:us-east-2:"
+        },
+        {
+          "name": "OKTA_CLIENT_ID",
+          "valueFrom": "arn:aws:ssm:us-east-2:"
+        },
+        {
+          "name": "OKTA_SECRET",
+          "valueFrom": "arn:aws:ssm:us-east-2:"
+        },
+        {
+          "name": "AWS_ACCESS_KEY_ID",
+          "valueFrom": "arn:aws:ssm:us-east-2:"
+        },
+        {
+          "name": "AWS_ACCESS_KEY_SECRET",
+          "valueFrom": "arn:aws:ssm:us-east-2:"
+        },
+        {
+          "name": "RIMCENTRAL_SECRET",
+          "valueFrom": "arn:aws:ssm:"
+        },
+        {
+          "name": "dev/rimcentral/test_machine_token",
+          "valueFrom": "arn:aws:secretsmanager:"
+        },
+        {
+          "name": "X-RIMCENTRAL-TOKEN",
+          "valueFrom": "arn:aws:secretsmanager:"
+        },
+        {
+          "name": "AAD_CLIENT_ID",
+          "valueFrom": "arn:aws:ssm:"
+        },
+        {
+          "name": "AAD_SECRET",
+          "valueFrom": "arn:aws:ssm:"
+        }
+      ],
+      "dockerSecurityOptions": null,
+      "memory": null,
+      "memoryReservation": null,
+      "volumesFrom": [],
+      "stopTimeout": null,
+      "image": "test_url/rimcentral-qa:latest",
+      "startTimeout": null,
+      "firelensConfiguration": null,
+      "dependsOn": null,
+      "disableNetworking": null,
+      "interactive": null,
+      "healthCheck": null,
+      "essential": true,
+      "links": null,
+      "hostname": null,
+      "extraHosts": null,
+      "pseudoTerminal": null,
+      "user": null,
+      "readonlyRootFilesystem": null,
+      "dockerLabels": null,
+      "systemControls": null,
+      "privileged": null,
+      "name": "rimcentral-global-api"
+    },
+    {
+      "dnsSearchDomains": null,
+      "environmentFiles": null,
+      "dnsSearchDomains": null,
+      "environmentFiles": null,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "secretOptions": null,
+        "options": {
+          "awslogs-group": "/ecs/rimcentral-global-api-qa",
+          "awslogs-region": "us-east-2",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "entryPoint": null,
+      "portMappings": [
+        {
+          "hostPort": 3000,
+          "protocol": "tcp",
+          "containerPort": 3000
+        }
+      ],
+      "command": null,
+      "linuxParameters": null,
+      "cpu": 0,
+      "environment": [
+        {
+          "name": "APP_URL",
+          "value": ""
+        }, 
+        {
+          "name": "API_URL",
+          "value": ""
+        },
+        {
+          "name": "AUTH_LOGOUT_REDIRECT_URI",
+          "value": ""
+        },
+        {
+          "name": "AUTH_REDIRECT_URI",
+          "value": ""
+        },
+        {
+          "name": "NODE_ENV",
+          "value": "dev"
+        },
+        {
+          "name": "OAUTH_ISSUER",
+          "value": ""
+        },
+        {
+          "name": "OKTA_DOMAIN",
+          "value": ""
+        },
+        {
+          "name": "test_API_BASEURL",
+          "value": ""
+        }
+      ],
+      "resourceRequirements": null,
+      "ulimits": null,
+      "dnsServers": null,
+      "mountPoints": [],
+      "workingDirectory": null,
+      "secrets": [
+        {
+          "name": "OAUTH_SECRET_KEY",
+          "valueFrom": "arn:aws:ssm:us-east-2:"
+        },
+        {
+          "name": "OKTA_CLIENT_ID",
+          "valueFrom": "arn:aws:ssm:us-east-2:"
+        },
+        {
+          "name": "OKTA_SECRET",
+          "valueFrom": "arn:aws:ssm:us-east-2:"
+        },
+        {
+          "name": "RIMCENTRAL_SECRET",
+          "valueFrom": "arn:aws:ssm:us-east-2:"
+        },
+        {
+          "name": "dev/rimcentral/test_machine_token",
+          "valueFrom": "arn:aws:secretsmanager:"
+        },
+        {
+          "name": "X-RIMCENTRAL-TOKEN",
+          "valueFrom": ""
+        },
+        {
+          "name": "AAD_CLIENT_ID",
+          "valueFrom": ""
+        },
+        {
+          "name": "AAD_SECRET",
+          "valueFrom": ""
+        }
+      ],
+      "dockerSecurityOptions": null,
+      "memory": null,
+      "memoryReservation": null,
+      "volumesFrom": [],
+      "stopTimeout": null,
+      "image": "image_urlrimcentral-fe-qa:latest",
+      "startTimeout": null,
+      "firelensConfiguration": null,
+      "dependsOn": null,
+      "disableNetworking": null,
+      "interactive": null,
+      "healthCheck": null,
+      "essential": true,
+      "links": null,
+      "hostname": null,
+      "extraHosts": null,
+      "pseudoTerminal": null,
+      "user": null,
+      "readonlyRootFilesystem": null,
+      "dockerLabels": null,
+      "systemControls": null,
+      "privileged": null,
+      "name": "rimcentral-fe"
+    }
+  ],
+  "placementConstraints": [],
+  "memory": "1024",
+  "taskRoleArn": "arn:aws:iam::",
+  "compatibilities": ["EC2", "FARGATE"],
+  "taskDefinitionArn": "image_url/rimcentral-qa2:62",
+  "family": "rimcentral-qa2",
+  "requiresAttributes": [
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "ecs.capability.execution-role-awslogs"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.ecr-auth"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "ecs.capability.secrets.asm.environment-variables"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.task-iam-role"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "ecs.capability.execution-role-ecr-pull"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "ecs.capability.task-eni"
+    }
+  ],
+  "pidMode": null,
+  "requiresCompatibilities": ["FARGATE"],
+  "networkMode": "awsvpc",
+  "runtimePlatform": {
+    "operatingSystemFamily": "LINUX",
+    "cpuArchitecture": null
+  },
+  "cpu": "512",
+  "revision": 62,
+  "status": "ACTIVE",
+  "inferenceAccelerators": null,
+  "proxyConfiguration": null,
+  "volumes": []
+}

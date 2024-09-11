@@ -1,0 +1,112 @@
+name: Deploy Global Api to Amazon ECS Staging Environment
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - staging
+
+env:
+  AWS_REGION: us-east-2 # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: rimcentral-qa # set this to your Amazon ECR repository name
+  ECS_SERVICE: rimcentral-qa # set this to your Amazon ECS service name
+  ECS_CLUSTER: rimcentral-qa # set this to your Amazon ECS cluster name
+  ECS_TASK_DEFINITION:
+    global-api/.aws/qa-task-definition.json # set this to the path to your Amazon ECS task definition
+    # file, e.g. .aws/task-definition.json
+  CONTAINER_NAME:
+    rimcentral-global-api # set this to the name of the container in the
+    # containerDefinitions section of your task definition
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    environment: development
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run Tests
+        run: |
+          cd global-api
+          npm install
+          npm run test
+
+      # - name: Set Tag Number
+      #   id: tag-number
+      #   run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+
+      # - name: Check Tag Release
+      #   env:
+      #     RELEASE_VERSION: ${{ steps.tag-number.outputs.tag }}
+      #   run: |
+      #     echo $RELEASE_VERSION
+      #     echo ${{ steps.vars.outputs.tag }}
+
+      # - name: Run Migrations
+      #   env:
+      #     NODE_ENV: prod
+      #     DB_USERNAME: admin
+      #     DB_PASSWORD: ${{ secrets.DEV_DB_PASSWORD }}
+      #     DB_HOST: database-1-instance-1.ccnwlr6eysnw.us-east-1.rds.amazonaws.com
+      #     DB_PORT: 3306
+      #     DB_NAME: rimcentral_v2
+      #   run: |
+      #     cd global-api
+      #     npm install
+      #     npm install -g typeorm
+      #     npm run build
+      #     npm run migrate
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_ID }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          # IMAGE_TAG: ${{ steps.tag-number.outputs.tag }}
+        run: |
+          # Build a docker container and
+          # push it to ECR so that it can
+          # be deployed to ECS.
+          # docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          # docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          # echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          cd global-api
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY"
+
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
